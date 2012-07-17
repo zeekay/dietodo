@@ -1,0 +1,27 @@
+{
+  "author": "sferreira",
+  "name": "dietodo",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sferreira/dietodo"
+  },
+  "main": "index",
+  "scripts": {
+    "start": "node_modules/.bin/die run",
+    "test": "node_modules/.bin/die test"
+  },
+  "dependencies": {
+    "die": "0.6.11",
+    "coffee-script": "*",
+    "markdown": "*"
+  },
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*",
+    "supertest": "*"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
