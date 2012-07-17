@@ -47,6 +47,9 @@ class TodosView extends Backbone.View
 
 
 
+# ==============================================================================
+# APP
+# ==============================================================================
 class App
   constructor: ->
     # create a global instance of our todos collection
