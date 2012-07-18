@@ -18,8 +18,10 @@ class Todos extends Backbone.Collection
 # ==============================================================================
 class TodoView extends Backbone.View
   className: 'todo'
+  # TODO: remove are from initialize, look at Backbone todo.js example
   initialize: (model) ->
     @model = model
+    @model.bind 'change', @render, @
   render: ->
     # TODO: create TodosView jade template
     $(@el).html @model.get('title')
@@ -30,6 +32,8 @@ class TodosView extends Backbone.View
   className: 'todos'
   initialize: (collection) ->
     @collection = collection
+    # TODO
+    @collection.bind 'change', @render, @
 
   template: require './templates/todos'
   render: ->
@@ -62,6 +66,8 @@ class AppView extends Backbone.View
 
     # render todo list
     @todosView = new TodosView @collection
+    # TODO DELETE
+    window.view = @todosView
     @todosView.render()
 
     # append UI and todo list to wrapper to display view
@@ -85,8 +91,10 @@ class Router extends Backbone.Router
     window.collection = @collection
 
     todo = new Todo()
-    window.todo = todo
-    todo.save({title: 'asdf'})
+    todo.save {title: $('input.add').val()}
+
+    # TODO: move this to success cb from save()
+    @collection.fetch()
 
     #todo.save({title: 'todo added from client'},
     #          {error: console.log 'client/js/app.coffee:Router.add: error'})

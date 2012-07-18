@@ -12,6 +12,9 @@ app = require('die')
   base: __dirname
 
 app.extend ->
+  @configure ->
+    @use @middleware.bodyParser()
+
   # look at die/src/extend.coffee for a list of:
   #
   #       * route handlers: all, get, post, put, del
@@ -38,8 +41,10 @@ app.extend ->
     # @body is the request body which is going to be a JSON object representing the
     # Todo Model to be created in the database.
 
+
     # TODO FIXME @body is undefined
     todo = @body
+    todo.id = uuid.v4()
     console.log @body
 
     # TODO delete
@@ -49,9 +54,8 @@ app.extend ->
     # back to the client the id signifies to Backbone that the instance has
     # already been saved, and subsequently it will use PUT requests to update
     # it.
-    todo.id = uuid.v4()
     # Save todo instance to database
-    db.set id, todo
+    db.set todo.id, todo
     # If you don't send anything back this route will hang.
     @send 'ok'
 
