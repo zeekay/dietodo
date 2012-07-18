@@ -1,0 +1,5 @@
+remove init look from die app
+
+create field and button to add new todo
+
+add AppView

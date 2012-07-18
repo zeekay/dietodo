@@ -45,6 +45,20 @@ class TodosView extends Backbone.View
     $(@el).html @template(subviews)
     @
 
+# TODO
+# view wrapper for the whole app: contains interfaces to add / remove todos
+#class AppView extends Backbone.View
+#  className: 'app'
+#  template: require './templates/app'
+
+# ==============================================================================
+# ROUTES
+# ==============================================================================
+class Router extends Backbone.Router
+  routs:
+    '':     'home'
+    'list': 'k'
+
 
 
 # ==============================================================================

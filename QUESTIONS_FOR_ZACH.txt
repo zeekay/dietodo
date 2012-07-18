@@ -1,0 +1,8 @@
+(1) In /views/index.jade, what file is the bottom line loading?
+
+  block scripts
+    script(src='app.js')
+
+
+
+(2) How is the functionality inside /client/js related to that in /views?

@@ -18,14 +18,12 @@ app.extend ->
     layout: false
 
   @get '/', ->
-    # TODO DELETE
-    console.log "get"
     testID = uuid.v4()
     db.set testID, {title : "todo title place holder"}
-    console.log "db.get: #{db.get testID}"
 
-    fs.readFile __dirname + '/README.md', 'utf8', (err, content) =>
-      @render 'index', readme: md.toHTML content
+    #fs.readFile __dirname + '/README.md', 'utf8', (err, content) =>
+    @render 'index'#, readme: md.toHTML content
+    #@render 'index'
 
   # API for interacting with Backbone Todo Model
   # RESTful HTTP Methods map out to CRUD
