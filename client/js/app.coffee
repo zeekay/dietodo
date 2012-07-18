@@ -47,19 +47,20 @@ class TodosView extends Backbone.View
 
 
 
+# ==============================================================================
+# APP
+# ==============================================================================
 class App
   constructor: ->
     # create a global instance of our todos collection
     @todos = new Todos
     # fetch collection from database
     @todos.fetch
-      success: (collection, response)->
+      success: (collection, response) =>
         # display app
-        console.log @todos
-        console.log collection
-        todosView = new TodosView collection
-        todosView.render()
-        $('#content').html todosView.$el.html()
+        @todosView = new TodosView @todos
+        @todosView.render()
+        $('#content').html @todosView.$el.html()
 
       error: (collection, response) ->
         # display error

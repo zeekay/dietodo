@@ -19,6 +19,7 @@ app.extend ->
 
   @get '/', ->
     # TODO DELETE
+    console.log "get"
     testID = uuid.v4()
     db.set testID, {title : "todo title place holder"}
     console.log "db.get: #{db.get testID}"
