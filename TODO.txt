@@ -1,5 +1,8 @@
-remove init look from die app
+DONE: remove init look from die app
 
 create field and button to add new todo
+    testID = uuid.v4()
+    db.set testID, {title : "todo title place holder"}
 
 add AppView
+

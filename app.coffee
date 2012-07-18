@@ -11,27 +11,26 @@ uuid  = require 'node-uuid'
 app = require('die')
   base: __dirname
 
-# NOTE: look at die/src/extend.coffee for a list of helper methods available to
-# route handlers ('all', 'get', 'post', 'put', 'del')
 app.extend ->
-  @set 'view options',
-    layout: false
-
+  # look at die/src/extend.coffee for a list of:
+  #
+  #       * route handlers: all, get, post, put, del
+  #
+  #       * helper methods: app, body, next, params, query, req, res, session,
+  #                         settings, json, redirect, render, send
+  #
   @get '/', ->
-    testID = uuid.v4()
-    db.set testID, {title : "todo title place holder"}
-
-    #fs.readFile __dirname + '/README.md', 'utf8', (err, content) =>
-    @render 'index'#, readme: md.toHTML content
-    #@render 'index'
+    # render jade template file: views/index.jade
+    # NOTE: files are automatically searched inside views/
+    @render 'index'
 
   # API for interacting with Backbone Todo Model
   # RESTful HTTP Methods map out to CRUD
   #
-  # Create -> POST
-  # Read   -> GET
-  # Delete -> DELETE
-  # Update -> PUT
+  # Create -> POST   -> @post
+  # Read   -> GET    -> @get
+  # Delete -> DELETE -> @del
+  # Update -> PUT    -> @put
 
   # Request handler that maps a url to an http method
   @post '/api/todos', ->
