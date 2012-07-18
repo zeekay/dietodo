@@ -37,6 +37,8 @@ app.extend ->
     # this is a context consisting of numerous helper methods and attributes
     # @body is the request body which is going to be a JSON object representing the
     # Todo Model to be created in the database.
+
+    # TODO FIXME @body is undefined
     todo = @body
     console.log @body
 
@@ -57,6 +59,7 @@ app.extend ->
   @put '/api/todos/:id', (id) ->
     # TODO delete
     console.log "app.coffee: @put '/api/todos', ->"
+    #console.log @body
     todo = @body
     db.set id, todo
     @send 'ok'
@@ -66,7 +69,6 @@ app.extend ->
     db.forEach (id, todo) ->
       todo.id = id
       collection.push todo
-
     # This is a helper method which returns a JSON response
     @json collection
 
