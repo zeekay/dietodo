@@ -1,15 +1,12 @@
 # TODO require client side stuff like it is done in clash
 Backbone = require 'backbone'
 
-# TODO require some kind client side uid generator
-#uuid  = require 'node-uuid'
-
 
 # ==============================================================================
 # MODELS
 # ==============================================================================
 class Todo extends Backbone.Model
-  urlRoot = '/api/todos'
+  urlRoot: '/api/todos'
 
 class Todos extends Backbone.Collection
   model: Todo
@@ -87,8 +84,13 @@ class Router extends Backbone.Router
     # TODO DELETE
     window.collection = @collection
 
-    todo = new Todo {id: 'asdf', title: 'todo added from client'}
-    @collection.add todo
+    todo = new Todo()
+    window.todo = todo
+    todo.save({title: 'asdf'})
+
+    #todo.save({title: 'todo added from client'},
+    #          {error: console.log 'client/js/app.coffee:Router.add: error'})
+
     @navigate()
 
 

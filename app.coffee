@@ -38,6 +38,11 @@ app.extend ->
     # @body is the request body which is going to be a JSON object representing the
     # Todo Model to be created in the database.
     todo = @body
+    console.log @body
+
+    # TODO delete
+    console.log "app.coffee: @post '/api/todos', ->"
+
     # Backbone expects us to add an id to objects we save, when we send them
     # back to the client the id signifies to Backbone that the instance has
     # already been saved, and subsequently it will use PUT requests to update
@@ -46,6 +51,14 @@ app.extend ->
     # Save todo instance to database
     db.set id, todo
     # If you don't send anything back this route will hang.
+    @send 'ok'
+
+  # Update an individual todo
+  @put '/api/todos/:id', (id) ->
+    # TODO delete
+    console.log "app.coffee: @put '/api/todos', ->"
+    todo = @body
+    db.set id, todo
     @send 'ok'
 
   @get '/api/todos', ->
