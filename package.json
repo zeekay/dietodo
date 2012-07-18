@@ -12,7 +12,7 @@
     "test": "node_modules/.bin/die test"
   },
   "dependencies": {
-    "die": "0.6.11",
+    "die": "0.6.13",
     "coffee-script": "*",
     "markdown": "*",
     "dirty": "~0.9.6",
