@@ -1,130 +1,64 @@
-# TODO require client side stuff like it is done in clash
 Backbone = require 'backbone'
+_ = require 'underscore'
 
 
-# ==============================================================================
-# MODELS
-# ==============================================================================
 class Todo extends Backbone.Model
+  # binds to server side CRUD methods. Look at: /app.coffee
   urlRoot: '/api/todos'
 
-class Todos extends Backbone.Collection
+class TodoList extends Backbone.Collection
   model: Todo
+  # binds to server side CRUD methods. Look at: /app.coffee
   url: '/api/todos'
 
+Todos = new TodoList()
 
-# ==============================================================================
-# VIEWS
-# ==============================================================================
+
 class TodoView extends Backbone.View
-  className: 'todo'
-  # TODO: remove are from initialize, look at Backbone todo.js example
-  initialize: (model) ->
-    @model = model
+  tagName: 'li'
+  # TODO: how does this template work?
+  #template: _.template($('#item-template').html())
+
+  initialize: ->
     @model.bind 'change', @render, @
+
   render: ->
-    # TODO: create TodosView jade template
-    $(@el).html @model.get('title')
+    @$el.html(@template(@model.toJSON()))
     @
 
-# renders Backbone.Collection Todos
-class TodosView extends Backbone.View
-  className: 'todos'
-  initialize: (collection) ->
-    @collection = collection
-    # TODO
-    @collection.bind 'change', @render, @
 
-  template: require './templates/todos'
-  render: ->
-    # generate rendered list of single todo view items from @collection
-    todos = []
-    for model in @collection.models
-      todo = new TodoView model
-      todo.render()
-      todos.push todo.$el.html()
-
-    # subviews will be used as the jade template context: members of subviews
-    # will be available as jade variables
-    subviews = {todos: todos}
-    $(@el).html @template(subviews)
-    @
-
-# view wrapper for the whole app: contains interfaces to add / remove todos
 class AppView extends Backbone.View
-  className: 'app'
-  template: require './templates/app'
 
-  # collection: Todos Backbone collection
-  initialize: (collection) ->
-    @collection = collection
+  el: $('#content')
 
-  # wrapper: jQuery DOM object that will wrap this view
-  render: (wrapper)->
-    # render app UI
-    $(@el).html @template()
+  initialize: ->
+    Todos.bind 'all', @test, @
 
-    # render todo list
-    @todosView = new TodosView @collection
-    # TODO DELETE
-    window.view = @todosView
-    @todosView.render()
-
-    # append UI and todo list to wrapper to display view
-    $(@el).append @todosView.$el
-    wrapper.append $(@el)
-    @
-
-# ==============================================================================
-# ROUTES
-# ==============================================================================
-class Router extends Backbone.Router
-  initialize: (collection) ->
-    @collection = collection
-
-  routes:
-    'add': 'add'
-    'del': 'del'
-
-  add: ->
-    # TODO DELETE
-    window.collection = @collection
-
-    todo = new Todo()
-    todo.save {title: $('input.add').val()}
-
-    # TODO: move this to success cb from save()
-    @collection.fetch()
-
-    #todo.save({title: 'todo added from client'},
-    #          {error: console.log 'client/js/app.coffee:Router.add: error'})
-
-    @navigate()
+  test: (eventType)->
+    console.log "AppView.test #{eventType}"
 
 
 
 # ==============================================================================
-# APP
+# TESTING
 # ==============================================================================
-class App
-  constructor: ->
-    # create a global instance of our todos collection
-    @collection = new Todos
+window.testCreate = ->
 
-    # fetch collection from database
-    @collection.fetch
-      success: (collection, response) =>
+  Todos.create({title: 'new model from testPUT'}, {
 
-        @router = new Router @collection
-        Backbone.history.start()
+    success: ->
+      console.log "testPUT success"
+      Todos.models[Todos.size()-1].set {title: 'modify model in testPUT'}
 
-        # display app
-        @appView = new AppView @collection
-        @appView.render($('#content'))
+    error: ->
+      console.log "testPUT error: Todos.create()"
+  })
+window.Todos = Todos
+window.app = new AppView()
 
-      error: (collection, response) ->
-        # display error
-        document.write "client/js/app.coffee:App: " + response.responseText
+window.testSave = ->
+  Todos.models[0].save {title: 'modify'}
+  Todos.models[0].save {title: 'modify again'}
+# ==============================================================================
 
-
-module.exports = app = new App()
+module.exports = window.app

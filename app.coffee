@@ -35,46 +35,51 @@ app.extend ->
   # Delete -> DELETE -> @del
   # Update -> PUT    -> @put
 
-  # Request handler that maps a url to an http method
+  # STOP TODO
+  #
+  # create all 4 url methods and check wich one is called with
+  # Collection.create()
+
+
   @post '/api/todos', ->
-    # this is a context consisting of numerous helper methods and attributes
-    # @body is the request body which is going to be a JSON object representing the
-    # Todo Model to be created in the database.
+    console.log "\n  app.coffee: @post '/api/todos', ->\n"
+    console.log @body
+    console.log "\n"
 
-
-    # TODO FIXME @body is undefined
     todo = @body
     todo.id = uuid.v4()
-    console.log @body
 
-    # TODO delete
-    console.log "app.coffee: @post '/api/todos', ->"
-
-    # Backbone expects us to add an id to objects we save, when we send them
-    # back to the client the id signifies to Backbone that the instance has
-    # already been saved, and subsequently it will use PUT requests to update
-    # it.
-    # Save todo instance to database
     db.set todo.id, todo
-    # If you don't send anything back this route will hang.
     @send 'ok'
 
-  # Update an individual todo
+
+  @get '/api/todos', ->
+    console.log "\n  app.coffee: @get '/api/todos', ->\n"
+
+    collection = []
+    db.forEach (id, todo) ->
+      todo.id = id
+      collection.push todo
+    @json collection
+
+
+  #@put '/api/todos', ->
+  #  console.log "\n  app.coffee: @put '/api/todos', ->\n"
+  #  @send 'ok'
+
+
+
   @put '/api/todos/:id', (id) ->
-    # TODO delete
-    console.log "app.coffee: @put '/api/todos', ->"
+    #@put '/api/todos', () ->
+    #console.log "\n app.coffee: @put '/api/todos:#{id}', -> \n"
+    console.log "\n app.coffee: @put '/api/todos', -> \n"
+    console.log id
+
     #console.log @body
     todo = @body
     db.set id, todo
     @send 'ok'
 
-  @get '/api/todos', ->
-    collection = []
-    db.forEach (id, todo) ->
-      todo.id = id
-      collection.push todo
-    # This is a helper method which returns a JSON response
-    @json collection
 
 
 module.exports = app
