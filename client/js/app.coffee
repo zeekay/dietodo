@@ -59,6 +59,7 @@ window.testSave = ->
   #Todos.models[0].save {title: 'modify'}
 
   Todos.models[0].set({title: 'modify2'})
+  Todos.models[0].save()
 
   console.log Todos.models[0].get('title')
   Todos.fetch
