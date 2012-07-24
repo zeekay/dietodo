@@ -50,7 +50,7 @@ app.extend ->
     todo.id = uuid.v4()
 
     db.set todo.id, todo
-    @send 'ok'
+    @send todo
 
 
   @get '/api/todos', ->
@@ -78,8 +78,12 @@ app.extend ->
     #console.log @body
     todo = @body
     db.set id, todo
-    @send 'ok'
+    @send todo
 
+
+  @del '/api/todos/:id', (id) ->
+    db.rm id
+    @send 'ok'
 
 
 module.exports = app

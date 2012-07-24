@@ -45,20 +45,35 @@ class AppView extends Backbone.View
 window.testCreate = ->
 
   Todos.create({title: 'new model from testPUT'}, {
-
+    error: (model, response) ->
+      console.log "testCreate error: Todos.create()"
+      console.log response.error()
     success: ->
-      console.log "testPUT success"
+      console.log "testCreate success"
       Todos.models[Todos.size()-1].set {title: 'modify model in testPUT'}
-
-    error: ->
-      console.log "testPUT error: Todos.create()"
   })
 window.Todos = Todos
 window.app = new AppView()
 
 window.testSave = ->
-  Todos.models[0].save {title: 'modify'}
-  Todos.models[0].save {title: 'modify again'}
+  #Todos.models[0].save {title: 'modify'}
+
+  Todos.models[0].set({title: 'modify2'})
+
+  console.log Todos.models[0].get('title')
+  Todos.fetch
+    success: ->
+      console.log Todos.models[0].get('title')
+
+  #Todos.models[0].save {title: 'modify again'}, {
+  #  error: (model, response) ->
+  #    console.log "testSave error: Todos.create()"
+  #    console.log response.error()
+  #  success: ->
+  #    console.log "testSave success"
+  #}
+
+Todos.fetch()
 # ==============================================================================
 
 module.exports = window.app
