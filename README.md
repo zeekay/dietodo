@@ -1,4 +1,4 @@
-# dietodo
+# Bucket List
 
 This is the default [Die][die] application. It demonstrates most of the basic features.
 
