@@ -70,14 +70,15 @@ app.extend ->
 
 
   @put '/api/todos/:id', (id) ->
-    #@put '/api/todos', () ->
-    #console.log "\n app.coffee: @put '/api/todos:#{id}', -> \n"
     console.log "\n app.coffee: @put '/api/todos', -> \n"
-    console.log id
+    # TODO FIXME id is undefined
+    # console.log id
 
-    #console.log @body
+    console.log @body.id
+    console.log @body.title
+
     todo = @body
-    db.set id, todo
+    db.set @body.id, todo
     @send todo
 
 

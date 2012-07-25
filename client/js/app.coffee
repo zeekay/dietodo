@@ -31,50 +31,51 @@ class AppView extends Backbone.View
 
   el: $('#content')
 
-  initialize: ->
-    Todos.bind 'all', @test, @
+  #initialize: ->
+  #  Todos.bind 'all', @test, @
 
-  test: (eventType)->
-    console.log "AppView.test #{eventType}"
+  #test: (eventType)->
+  #  console.log "AppView.test #{eventType}"
 
 
 
 # ==============================================================================
 # TESTING
 # ==============================================================================
-window.testCreate = ->
+window.Todos = Todos
+window.app = new AppView()
 
-  Todos.create({title: 'new model from testPUT'}, {
+window.testCreate = (cb)->
+  Todos.create({title: 'new'}, {
     error: (model, response) ->
       console.log "testCreate error: Todos.create()"
       console.log response.error()
     success: ->
-      console.log "testCreate success"
-      Todos.models[Todos.size()-1].set {title: 'modify model in testPUT'}
+      if _.last(Todos.models).get('title') == 'new'
+        console.log "testCreate success"
+        cb.success() if cb.success
+      else
+        console.log "testCreate error: wrong title"
+        cb.error() if cb.error
   })
-window.Todos = Todos
-window.app = new AppView()
 
+# create new todo item with testCreate and then modify its title
 window.testSave = ->
-  #Todos.models[0].save {title: 'modify'}
-
-  Todos.models[0].set({title: 'modify2'})
-  Todos.models[0].save
+  window.testCreate(
     success: ->
-      console.log Todos.models[0].get('title')
-      Todos.fetch
+      before = _.last(Todos.models).get('title')
+      _.last(Todos.models).save({title: 'modified'}
         success: ->
-          console.log Todos.models[0].get('title')
+          after = _.last(Todos.models).get('title')
+          if before == 'new' && after == 'modified'
+            console.log "testSave success"
+          else
+            console.log "testSave error: wrong titles"
+      )
+  )
 
-  #Todos.models[0].save {title: 'modify again'}, {
-  #  error: (model, response) ->
-  #    console.log "testSave error: Todos.create()"
-  #    console.log response.error()
-  #  success: ->
-  #    console.log "testSave success"
-  #}
 
-Todos.fetch()
+Todos.fetch({success: -> testSave()})
 # ==============================================================================
 
 module.exports = window.app
